@@ -42,15 +42,69 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Company"
+                "$ref": "#/responses/Company"
               }
             }
           },
           "404": {
-            "description": "No companies found"
+            "description": "No company found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/CompanyNotFound"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Error retrieving companies"
+            "description": "Company cannot be updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/ErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create company",
+        "tags": ["Company"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/responses/Company"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "12d345"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Company cannot be updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/ErrorMessage"
+                }
+              }
+            }
           }
         }
       }
@@ -72,50 +126,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Company"
+              "$ref": "#/responses/Company"
             }
           },
           "404": {
-            "description": "No company found"
-          },
-          "500": {
-            "description": "Error retrieving company"
-          }
-        }
-      }
-    },
-    "/company/": {
-      "post": {
-        "summary": "Create company",
-        "tags": ["Company"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Company"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success",
+            "description": "No company found",
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "string"
+                "data": {
+                  "$ref": "#/responses/CompanyNotFound"
                 }
               }
             }
           },
           "500": {
-            "description": "Company cannot be created"
+            "description": "Company cannot be updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/ErrorMessage"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/company/{id}": {
+      },
       "patch": {
         "summary": "Update company",
         "tags": ["Company"],
@@ -142,21 +179,35 @@
               "type": "object",
               "properties": {
                 "data": {
-                  "$ref": "#/definitions/Company"
+                  "$ref": "#/responses/Company"
                 }
               }
             }
           },
           "404": {
-            "description": "No company found"
+            "description": "No company found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/CompanyNotFound"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Company cannot be updated"
+            "description": "Company cannot be updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/ErrorMessage"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/company/delete/{id}": {
+      },
       "delete": {
         "summary": "Delete company",
         "tags": ["Company"],
@@ -171,13 +222,38 @@
         ],
         "responses": {
           "204": {
-            "description": "Success"
+            "description": "Company was deleted",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "example": "Company was deleted"
+                }
+              }
+            }
           },
           "404": {
-            "description": "No company found"
+            "description": "No company found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/CompanyNotFound"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Company cannot be deleted"
+            "description": "Company cannot be updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/responses/ErrorMessage"
+                }
+              }
+            }
           }
         }
       }
@@ -208,15 +284,720 @@
       }
     }
   },
-  "responses": {},
-  "parameters": {
-    "username": {
-      "name": "username",
-      "description": "Username to use for login.",
-      "in": "formData",
-      "required": true,
-      "type": "string"
+  "responses": {
+    "Company": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "12345",
+          "description": "document id"
+        },
+        "name": {
+          "type": "string",
+          "example": "Company Name"
+        },
+        "url_name": {
+          "type": "string",
+          "example": "company-name"
+        },
+        "email": {
+          "type": "string",
+          "example": "company@example.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "1234567890"
+        },
+        "img": {
+          "type": "string",
+          "example": "https://example.com/image.jpg"
+        },
+        "description": {
+          "type": "string",
+          "example": "Company description"
+        },
+        "nip": {
+          "type": "string",
+          "example": "1234567890"
+        },
+        "pin": {
+          "type": "number",
+          "example": 1234
+        },
+        "address": {
+          "type": "string",
+          "example": "123 Street"
+        },
+        "is_full": {
+          "type": "boolean",
+          "example": true
+        },
+        "is_accepted": {
+          "type": "boolean",
+          "example": true
+        },
+        "is_demo": {
+          "type": "boolean",
+          "example": false
+        },
+        "created_time": {
+          "type": "Date",
+          "example": "2022-01-01T00:00:00Z"
+        },
+        "made_full_time": {
+          "type": "Date",
+          "example": "2022-01-01T00:00:00Z"
+        },
+        "modified_time": {
+          "type": "Date",
+          "example": "2022-01-01T00:00:00Z"
+        },
+        "domain": {
+          "type": "string",
+          "example": "example.com"
+        },
+        "entry_points": {
+          "type": "number",
+          "example": 10
+        },
+        "presta_hash": {
+          "type": "string",
+          "example": "presta-hash"
+        },
+        "secure_key": {
+          "type": "string",
+          "example": "secure-key"
+        },
+        "css_file": {
+          "type": "string",
+          "example": "https://example.com/style.css"
+        },
+        "template_file": {
+          "type": "string",
+          "example": "template.html"
+        },
+        "user_data_url": {
+          "type": "string",
+          "example": "https://example.com/user-data"
+        },
+        "user_data_secret": {
+          "type": "string",
+          "example": "user-data-secret"
+        },
+        "iframe_url": {
+          "type": "string",
+          "example": "https://example.com/iframe"
+        },
+        "smtp": {
+          "type": "string",
+          "example": "smtp.example.com"
+        },
+        "mail_activation_subject": {
+          "type": "string",
+          "example": "Activation Subject"
+        },
+        "mail_activation_template": {
+          "type": "string",
+          "example": "Activation Template"
+        },
+        "mail_register_subject": {
+          "type": "string",
+          "example": "Register Subject"
+        },
+        "mail_register_template": {
+          "type": "string",
+          "example": "Register Template"
+        },
+        "mail_prizes": {
+          "type": "string",
+          "example": "prizes@example.com"
+        },
+        "mail_technical": {
+          "type": "string",
+          "example": "technical@example.com"
+        },
+        "has_custom_bill": {
+          "type": "boolean",
+          "example": true
+        },
+        "custom_bill_smtp": {
+          "type": "string",
+          "example": "smtp.example.com"
+        },
+        "custom_bill_email": {
+          "type": "string",
+          "example": "bill@example.com"
+        },
+        "has_gamification": {
+          "type": "boolean",
+          "example": true
+        },
+        "shown_survey": {
+          "type": "number",
+          "example": 5
+        },
+        "rules": {
+          "type": "string",
+          "example": "Company rules"
+        },
+        "prizes": {
+          "type": "string",
+          "example": "Company prizes"
+        },
+        "help": {
+          "type": "string",
+          "example": "Help information"
+        },
+        "contact_text": {
+          "type": "string",
+          "example": "Contact information"
+        },
+        "company_rules": {
+          "type": "string",
+          "example": "Company rules"
+        },
+        "company_rules_en": {
+          "type": "string",
+          "example": "Company rules (English)"
+        },
+        "company_rules_ru": {
+          "type": "string",
+          "example": "Company rules (Russian)"
+        },
+        "rules_necessarily": {
+          "type": "boolean",
+          "example": true
+        },
+        "is_embed_cached": {
+          "type": "boolean",
+          "example": true
+        },
+        "annoying_modal": {
+          "type": "boolean",
+          "example": true
+        },
+        "mobile_icons_on_desktop": {
+          "type": "boolean",
+          "example": true
+        },
+        "after_logout_popup_id": {
+          "type": "number",
+          "example": 1
+        },
+        "background_login": {
+          "type": "string",
+          "example": "https://example.com/background-login.jpg"
+        },
+        "background_loyalty": {
+          "type": "string",
+          "example": "https://example.com/background-loyalty.jpg"
+        },
+        "background_login_m": {
+          "type": "string",
+          "example": "https://example.com/background-login-m.jpg"
+        },
+        "background_loyalty_m": {
+          "type": "string",
+          "example": "https://example.com/background-loyalty-m.jpg"
+        },
+        "main_color": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "primary_color": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "main_font_color": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "primary_font_color": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "menu_color": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "menu_color_active": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "test_mode": {
+          "type": "boolean",
+          "example": true
+        },
+        "map_url": {
+          "type": "string",
+          "example": "https://example.com/map"
+        },
+        "mobile_menu_order": {
+          "type": "string",
+          "example": "order"
+        },
+        "third_company_url": {
+          "type": "string",
+          "example": "https://example.com/third-company"
+        },
+        "company_url": {
+          "type": "string",
+          "example": "https://example.com/company"
+        },
+        "third_company": {
+          "type": "string",
+          "example": "Third Company"
+        },
+        "login_css": {
+          "type": "string",
+          "example": "https://example.com/login.css"
+        },
+        "is_gamification_ranking_hidden": {
+          "type": "boolean",
+          "example": true
+        },
+        "is_lottery": {
+          "type": "boolean",
+          "example": true
+        },
+        "mobile_login_css": {
+          "type": "string",
+          "example": "https://example.com/mobile-login.css"
+        },
+        "template": {
+          "type": "number",
+          "example": 1
+        },
+        "color_scheme": {
+          "type": "number",
+          "example": 1
+        },
+        "dark_scheme": {
+          "type": "number",
+          "example": 1
+        },
+        "logo_image": {
+          "type": "string",
+          "example": "https://example.com/logo.jpg"
+        },
+        "login_text_1_line": {
+          "type": "string",
+          "example": "Welcome"
+        },
+        "login_text_2_line": {
+          "type": "string",
+          "example": "Login"
+        },
+        "login_text_below_form": {
+          "type": "string",
+          "example": "Additional login information"
+        },
+        "ico_awards": {
+          "type": "string",
+          "example": "https://example.com/awards.ico"
+        },
+        "ico_gamification": {
+          "type": "string",
+          "example": "https://example.com/gamification.ico"
+        },
+        "ico_history": {
+          "type": "string",
+          "example": "https://example.com/history.ico"
+        },
+        "ico_account": {
+          "type": "string",
+          "example": "https://example.com/account.ico"
+        },
+        "ico_contact": {
+          "type": "string",
+          "example": "https://example.com/contact.ico"
+        },
+        "ico_logout": {
+          "type": "string",
+          "example": "https://example.com/logout.ico"
+        },
+        "ico_showgallery": {
+          "type": "string",
+          "example": "https://example.com/showgallery.ico"
+        },
+        "ico_billmap": {
+          "type": "string",
+          "example": "https://example.com/billmap.ico"
+        },
+        "ico_m_map": {
+          "type": "string",
+          "example": "https://example.com/m-map.ico"
+        },
+        "ico_m_bill_map": {
+          "type": "string",
+          "example": "https://example.com/m-bill-map.ico"
+        },
+        "ico_m_html": {
+          "type": "string",
+          "example": "https://example.com/m-html.ico"
+        },
+        "ico_m_receipt": {
+          "type": "string",
+          "example": "https://example.com/m-receipt.ico"
+        },
+        "ico_m_photo": {
+          "type": "string",
+          "example": "https://example.com/m-photo.ico"
+        },
+        "ico_m_share": {
+          "type": "string",
+          "example": "https://example.com/m-share.ico"
+        },
+        "ico_m_contact": {
+          "type": "string",
+          "example": "https://example.com/m-contact.ico"
+        },
+        "ico_m_gallery": {
+          "type": "string",
+          "example": "https://example.com/m-gallery.ico"
+        },
+        "ico_m_survey": {
+          "type": "string",
+          "example": "https://example.com/m-survey.ico"
+        },
+        "ico_m_awards": {
+          "type": "string",
+          "example": "https://example.com/m-awards.ico"
+        },
+        "layout_is_round_corners": {
+          "type": "boolean",
+          "example": true
+        },
+        "layout_background_color_outer": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "layout_background_color_inner": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "layout_text_color": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "layout_link_color": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "layout_menu_color": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "layout_loader_color_inner": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "layout_loader_color_outer": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "layout_loader_color_shadow": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "layout_gradient_start": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
+        "layout_gradient_end": {
+          "type": "string",
+          "example": "#000000"
+        },
+        "layout_icons_saturation": {
+          "type": "number",
+          "example": 50
+        },
+        "layout_icons_hue": {
+          "type": "number",
+          "example": 180
+        },
+        "layout_icons_brightness": {
+          "type": "number",
+          "example": 0.5
+        },
+        "layout_font_font_type": {
+          "type": "string",
+          "example": "Arial"
+        },
+        "layout_font_url": {
+          "type": "string",
+          "example": "https://example.com/font.woff"
+        },
+        "layout_login_image": {
+          "type": "string",
+          "example": "https://example.com/login-image.jpg"
+        },
+        "layout_login_image_width": {
+          "type": "number",
+          "example": 500
+        },
+        "partner_logo_image": {
+          "type": "string",
+          "example": "https://example.com/partner-logo.jpg"
+        },
+        "layout_custom_css": {
+          "type": "string",
+          "example": "https://example.com/custom.css"
+        },
+        "layout_custom_js": {
+          "type": "string",
+          "example": "https://example.com/custom.js"
+        },
+        "layout_has_close": {
+          "type": "boolean",
+          "example": true
+        },
+        "mobile_policy_url": {
+          "type": "string",
+          "example": "https://example.com/mobile-policy"
+        },
+        "email_platform_name": {
+          "type": "string",
+          "example": "Email Platform Name"
+        },
+        "email_platform_resign": {
+          "type": "string",
+          "example": "Email Platform Resign"
+        },
+        "email_platform_contact": {
+          "type": "string",
+          "example": "Email Platform Contact"
+        },
+        "profile_need_address": {
+          "type": "boolean",
+          "example": true
+        },
+        "profile_survey_id": {
+          "type": "number",
+          "example": 1
+        },
+        "has_cookie_check": {
+          "type": "number",
+          "example": 1
+        },
+        "type": {
+          "type": "number",
+          "example": 1
+        },
+        "is_master": {
+          "type": "number",
+          "example": 1
+        },
+        "master_id": {
+          "type": "number",
+          "example": 1
+        },
+        "is_deployed": {
+          "type": "number",
+          "example": 1
+        },
+        "new_structure_deployed": {
+          "type": "number",
+          "example": 1
+        },
+        "prize_email_on": {
+          "type": "number",
+          "example": 1
+        },
+        "prize_email_text_for_user": {
+          "type": "string",
+          "example": "Prize Email Text for User"
+        },
+        "prize_email_text_for_admin": {
+          "type": "string",
+          "example": "Prize Email Text for Admin"
+        },
+        "prize_email_admin_emails": {
+          "type": "string",
+          "example": "admin@example.com"
+        },
+        "is_recommendations": {
+          "type": "number",
+          "example": 1
+        },
+        "recommendations_tag": {
+          "type": "string",
+          "example": "recommendations"
+        },
+        "time_over": {
+          "type": "number",
+          "example": 1
+        },
+        "products_over": {
+          "type": "number",
+          "example": 1
+        },
+        "only_email_login": {
+          "type": "number",
+          "example": 1
+        },
+        "login_surname_filed": {
+          "type": "number",
+          "example": 1
+        },
+        "signup_sms": {
+          "type": "string",
+          "example": "Signup SMS"
+        },
+        "login_phone_filed": {
+          "type": "number",
+          "example": 1
+        },
+        "smsapi_sender_name": {
+          "type": "string",
+          "example": "SMSAPI Sender Name"
+        },
+        "sms_reminder_days": {
+          "type": "number",
+          "example": 7
+        },
+        "sms_reminder_template": {
+          "type": "string",
+          "example": "SMS Reminder Template"
+        },
+        "sms_final_positive_template": {
+          "type": "string",
+          "example": "SMS Final Positive Template"
+        },
+        "sms_final_negative_template": {
+          "type": "string",
+          "example": "SMS Final Negative Template"
+        },
+        "sms_accept_template": {
+          "type": "string",
+          "example": "SMS Accept Template"
+        },
+        "sms_decline_template": {
+          "type": "string",
+          "example": "SMS Decline Template"
+        },
+        "survey_fillout_template": {
+          "type": "string",
+          "example": "Survey Fillout Template"
+        },
+        "direct_signup_password": {
+          "type": "number",
+          "example": 1
+        },
+        "is_iqos": {
+          "type": "number",
+          "example": 1
+        },
+        "do_send_email_notifications_for_acceptance": {
+          "type": "number",
+          "example": 1
+        },
+        "need_profile_data": {
+          "type": "string",
+          "example": "Profile Data"
+        },
+        "reward_limit_amount": {
+          "type": "number",
+          "example": 10
+        },
+        "reward_limit_period_value": {
+          "type": "number",
+          "example": 1
+        },
+        "reward_limit_period": {
+          "type": "Period",
+          "example": "DAY"
+        },
+        "reward_limit_total": {
+          "type": "number",
+          "example": 100
+        },
+        "products_order": {
+          "type": "string",
+          "example": "price"
+        },
+        "redirect_after_login": {
+          "type": "string",
+          "example": "https://example.com/redirect"
+        },
+        "force_redirect_after_login": {
+          "type": "number",
+          "example": 1
+        },
+        "bought_info": {
+          "type": "string",
+          "example": "Bought Info"
+        },
+        "bought_info_en": {
+          "type": "string",
+          "example": "Bought Info (English)"
+        },
+        "bought_info_ru": {
+          "type": "string",
+          "example": "Bought Info (Russian)"
+        },
+        "agkn_tag_bpid": {
+          "type": "string",
+          "example": "agkn-tag-bpid"
+        },
+        "is_v3": {
+          "type": "number",
+          "example": 1
+        },
+        "partner_of_company": {
+          "type": "string",
+          "example": "Partner Company"
+        },
+        "partner_of_company_id": {
+          "type": "number",
+          "example": 1
+        },
+        "partner_accepted": {
+          "type": "number",
+          "example": 1
+        },
+        "can_have_partners": {
+          "type": "number",
+          "example": 1
+        },
+        "show_partnership_products": {
+          "type": "number",
+          "example": 1
+        },
+        "secret_code": {
+          "type": "string",
+          "example": "secret-code"
+        },
+        "secret_code_points": {
+          "type": "number",
+          "example": 10
+        },
+        "secret_codes": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "CompanyNotFound": {
+      "type": "string",
+      "example": "No company found"
+    },
+    "ErrorMessage": {
+      "type": "string",
+      "example": "Something went wrong"
     }
+  },
+  "parameters": {
+    "id": [
+      {
+        "name": "id",
+        "in": "path",
+        "type": "string",
+        "required": true,
+        "description": "ID"
+      }
+    ]
   },
   "securityDefinitions": {},
   "tags": [
