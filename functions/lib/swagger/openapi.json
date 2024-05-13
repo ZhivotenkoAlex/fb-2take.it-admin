@@ -1,0 +1,277 @@
+{
+  "info": {
+    "title": "2take.it",
+    "version": "1.0.0",
+    "description": "A sample API"
+  },
+  "host": "127.0.0.1:5001/development-417611/us-central1/testAdm",
+  "basePath": "/",
+  "swagger": "2.0",
+  "paths": {
+    "/company/list": {
+      "get": {
+        "summary": "Get a list of companies",
+        "tags": ["Company"],
+        "parameters": [
+          {
+            "name": "companyName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter by company name"
+          },
+          {
+            "name": "profileId",
+            "in": "query",
+            "type": "string",
+            "description": "Filter by profile ID"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "type": "string",
+            "description": "Filter by start date"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "type": "string",
+            "description": "Filter by end date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Company"
+              }
+            }
+          },
+          "404": {
+            "description": "No companies found"
+          },
+          "500": {
+            "description": "Error retrieving companies"
+          }
+        }
+      }
+    },
+    "/company/paginated": {
+      "get": {
+        "summary": "Get paginated list of companies (limit is 10)",
+        "tags": ["Company"],
+        "parameters": [
+          {
+            "name": "lastId",
+            "in": "query",
+            "description": "ID of the last company in the previous page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "firstId",
+            "in": "query",
+            "description": "ID of the first company in the next page",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "toNext",
+            "in": "query",
+            "description": "Whether to navigate to the next page",
+            "required": false,
+            "type": "string",
+            "enum": ["true", "false", "null"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of companies",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Company"
+              }
+            }
+          },
+          "404": {
+            "description": "No companies found"
+          },
+          "500": {
+            "description": "Error retrieving companies"
+          }
+        }
+      }
+    },
+    "/company/{id}": {
+      "get": {
+        "summary": "Get company by ID",
+        "tags": ["Company"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Company ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Company"
+            }
+          },
+          "404": {
+            "description": "No company found"
+          },
+          "500": {
+            "description": "Error retrieving company"
+          }
+        }
+      }
+    },
+    "/company/create": {
+      "post": {
+        "summary": "Create company",
+        "tags": ["Company"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Company"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Company cannot be created"
+          }
+        }
+      }
+    },
+    "/company/update/{id}": {
+      "patch": {
+        "summary": "Update company",
+        "tags": ["Company"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Company ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Company"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Company"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No company found"
+          },
+          "500": {
+            "description": "Company cannot be updated"
+          }
+        }
+      }
+    },
+    "/company/delete/{id}": {
+      "delete": {
+        "summary": "Delete company",
+        "tags": ["Company"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Company ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "No company found"
+          },
+          "500": {
+            "description": "Company cannot be deleted"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Company": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "made_full_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "responses": {},
+  "parameters": {
+    "username": {
+      "name": "username",
+      "description": "Username to use for login.",
+      "in": "formData",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "securityDefinitions": {},
+  "tags": [
+    {
+      "name": "Company",
+      "description": "Companies"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import * as express from "express"
 import { db } from "../index"
 import { dateToTimestamp } from "../helpers/timestampToDate"
 import { Company } from "../types/company"
+import { CollectionReference, FieldPath } from "firebase-admin/firestore"
 
 const company = express()
 
@@ -45,6 +46,65 @@ company.get("/company/list", async (request, response) => {
     }
   } catch (error) {
     return response.status(500).send({ data: "Error retrieving companies" })
+  }
+})
+
+// Endpoint to get a list of companies
+company.get("/company/paginated", async (request, response) => {
+  // Extract query parameters from the request
+
+  try {
+    const { lastId, firstId, toNext } = request.query
+
+    const limit = 10
+
+    // Initialize the query
+    let query = db.collection(collection).orderBy(FieldPath.documentId())
+
+    // Apply pagination to the query
+    if (toNext == "null") {
+      // Initial and filter query
+      query = query.limit(
+        limit
+      ) as CollectionReference<FirebaseFirestore.DocumentData>
+    }
+
+    if (toNext === "true" && lastId !== "" && lastId !== "null") {
+      // Next button query
+      query = query
+        .startAfter(lastId)
+        .limit(limit) as CollectionReference<FirebaseFirestore.DocumentData>
+    } else if (toNext === "false" && firstId !== "" && firstId !== "null") {
+      // Previous button query
+      query = query
+        .endBefore(firstId)
+        .limitToLast(
+          limit
+        ) as CollectionReference<FirebaseFirestore.DocumentData>
+    }
+
+    // Execute the query
+    const companies = await query.get().then((res) =>
+      res.docs.map((doc) => ({
+        // Extract the company data from the document
+        _id: doc.id,
+        ...doc.data(),
+      }))
+    )
+
+    // If no companies were found, throw an error
+    if (companies.length === 0) {
+      response.status(404).send({ data: "No companies found" })
+    } else {
+      response.status(200).send({ data: companies })
+    }
+
+    // Send the list of companies to the client
+  } catch (error: unknown) {
+    // If no companies were found, send a 404 response
+    if (typeof error === "object" && error !== null && "message" in error) {
+      response.status(500).send({ data: error?.message })
+    }
   }
 })
 
