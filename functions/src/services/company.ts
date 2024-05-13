@@ -165,7 +165,7 @@ export const createCompany = async (
       },
     })
   } catch (error) {
-    return response.status(500).send({ data: "Company cannot be created" })
+    return response.status(500).send({ data: "Something went wrong" })
   }
 }
 
@@ -203,7 +203,7 @@ export const updateCompany = async (
     // Send updated company to the client
     return response.status(200).send({ data: { updatedItem } })
   } catch (error) {
-    return response.status(500).send({ data: "Company cannot be updated" })
+    return response.status(500).send({ data: "Something went wrong" })
   }
 }
 
@@ -228,6 +228,6 @@ export const deleteCompany = async (
     // Send response to the client
     return response.status(204).send({ data: "Company was deleted" })
   } catch (error) {
-    return response.status(500).send({ data: "Company cannot be deleted" })
+    return response.status(500).send({ data: "Something went wrong" })
   }
 }

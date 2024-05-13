@@ -3,29 +3,25 @@ import {
   createCompany,
   deleteCompany,
   getCompanyById,
-  getCompanyList,
   getPaginatedCompanyList,
   updateCompany,
 } from "../services/company"
 
 const company = express()
 
-// Get a list of companies
-company.get("/company/list", getCompanyList)
-
 // Endpoint to get a list of companies
-company.get("/company/paginated", getPaginatedCompanyList)
+company.get("/company", getPaginatedCompanyList)
 
 // Get company by id
 company.get("/company/:id", getCompanyById)
 
 // Create company
-company.post("/company/create", createCompany)
+company.post("/company", createCompany)
 
 // Update company
-company.patch("/company/update/:id", updateCompany)
+company.patch("/company/:id", updateCompany)
 
 // Delete company
-company.delete("/company/delete/:id", deleteCompany)
+company.delete("/company/:id", deleteCompany)
 
 export default company

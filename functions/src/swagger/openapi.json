@@ -8,56 +8,7 @@
   "basePath": "/",
   "swagger": "2.0",
   "paths": {
-    "/company/list": {
-      "get": {
-        "summary": "Get a list of companies",
-        "tags": ["Company"],
-        "parameters": [
-          {
-            "name": "companyName",
-            "in": "query",
-            "type": "string",
-            "description": "Filter by company name"
-          },
-          {
-            "name": "profileId",
-            "in": "query",
-            "type": "string",
-            "description": "Filter by profile ID"
-          },
-          {
-            "name": "startDate",
-            "in": "query",
-            "type": "string",
-            "description": "Filter by start date"
-          },
-          {
-            "name": "endDate",
-            "in": "query",
-            "type": "string",
-            "description": "Filter by end date"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Company"
-              }
-            }
-          },
-          "404": {
-            "description": "No companies found"
-          },
-          "500": {
-            "description": "Error retrieving companies"
-          }
-        }
-      }
-    },
-    "/company/paginated": {
+    "/company": {
       "get": {
         "summary": "Get paginated list of companies (limit is 10)",
         "tags": ["Company"],
@@ -133,7 +84,7 @@
         }
       }
     },
-    "/company/create": {
+    "/company/": {
       "post": {
         "summary": "Create company",
         "tags": ["Company"],
@@ -164,7 +115,7 @@
         }
       }
     },
-    "/company/update/{id}": {
+    "/company/{id}": {
       "patch": {
         "summary": "Update company",
         "tags": ["Company"],
