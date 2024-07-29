@@ -23,9 +23,17 @@ class FirestoreStorage {
    * @param {function} callback - The callback function to execute with the survey data.
    */
   async getSurvey(id) {
-    console.log("🚀 ~ FirestoreStorage ~ getSurvey ~ id:", id)
     const doc = await db.collection("surveys").doc(id).get();
-    console.log("🚀 ~ FirestoreStorage ~ getSurvey ~ doc:", doc)
+    return doc.exists ? { id: doc.id, ...doc.data() } : null;
+  }
+
+  /**
+ * Retrieves a single survey from Firestore.
+ * @param {string} id - The ID of the survey to retrieve.
+ * @param {function} callback - The callback function to execute with the survey data.
+ */
+  async getSurveyByCompanyId(company_id) {
+    const doc = await db.collection("surveys").doc().where('company_id', '==', company_id).get();
     return doc.exists ? { id: doc.id, ...doc.data() } : null;
   }
   /**
@@ -99,15 +107,29 @@ class FirestoreStorage {
    * @param {string} postId - The ID of the survey post.
    * @param {function} callback - The callback function to execute with the survey results.
    */
-  async getResults(postId) {
-    console.log("🚀 ~ FirestoreStorage ~ getResults ~ postId:", postId)
-    const snapshot = await db.collection("results").where("json.postid", "==", postId).get();
+  async getResults(postId, userId) {
+    const snapshot = await db.collection("results").where("json.postid", "==", postId).where('userId', "==", userId).get();
     if (snapshot.empty) {
       return null;
     }
     // eslint-disable-next-line arrow-parens
-    return { id: postId, data: snapshot.docs.map(doc => doc.data().json) };
+    return [...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))];
   }
+  /**
+   * Retrieves survey results.
+   * @param {string} companyId - The ID of the survey post.
+   * @param {function} callback - The callback function to execute with the survey results.
+   */
+  async getCompanyUserByCompanyId(companyId) {
+    const snapshot = await db.collection("company_users").where("company_id", "==", companyId).get();
+    if (snapshot.empty) {
+      return null;
+    }
+    // eslint-disable-next-line arrow-parens
+    return { ...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) };
+  }
+
+
 }
 
 module.exports = FirestoreStorage;

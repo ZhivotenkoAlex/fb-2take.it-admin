@@ -47,8 +47,14 @@ router.post("/post", async (req, res) => {
 });
 
 router.get("/results", async (req, res) => {
-  const { postId } = req.query;
-  const result = await storage.getResults(postId);
+  const { postId, userId } = req.query;
+  const result = await storage.getResults(postId, userId);
+  res.json(result);
+});
+
+router.get("/companyUsers/:companyId", async (req, res) => {
+  const { companyId } = req.params;
+  const result = await storage.getCompanyUserByCompanyId(companyId);
   res.json(result);
 });
 
